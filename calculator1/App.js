@@ -1,112 +1,68 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
+import React, { Component } from 'react';
+import {StyleSheet,Text,View} from 'react-native';
 
-import React from 'react';
-import type {Node} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import InputNumberButton from './component/InputNumberButton'
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+const buttons = [
+    ['CLEAR','DEL'],
+    [7,8,9,'/'],
+    [4,5,6,'*'],
+    [1,2,3,'-'],
+    [0,'.','=','+']
+];
 
-const Section = ({children, title}): Node => {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-};
+export default class App extends Component{
 
-const App: () => Node = () => {
-  const isDarkMode = useColorScheme() === 'dark';
+    renderButtons(){
+        let layouts = buttons.map((buttonRows,index) => {
+            let rowItem = buttonRows.map((buttonItems,buttonIndex) => {
+                return <InputNumberButton 
+                value={buttonItems}
+                handleOnPress={() => {}}
+                key={'btn-' + buttonIndex}/>
+            });
+            return <View style={styles.inputRow} key={'row-' + index}>{rowItem}</View>
+        });
+        return layouts
+    }
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+    render(){
+        return(
+            <View style={styles.container}>
+                <View style={styles.resultContainer}>
+                    <Text style={styles.resultText}>0</Text>
+                </View>
 
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.js</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-};
+                <View style={styles.inputContainer}>
+                    {this.renderButtons()}
+                </View>
+            </View>
+        )
+    }
+}
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
+    container:{
+        flex: 1
+    },
+    resultContainer:{
+        flex: 2,
+        justifyContent: 'center',
+        backgroundColor: '#33312d'
+    },
+    inputContainer: {
+        flex: 8,
+        backgroundColor: '#9ebbc4'
+    },
+    resultText:{
+        color: 'white',
+        fontSize: 80,
+        fontWeight: 'bold',
+        padding: 20,
+        textAlign: 'right'
+    },
+    inputRow:{
+      flex: 1,
+      flexDirection: 'row'
+    }
 });
-
-export default App;
